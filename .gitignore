@@ -26,6 +26,7 @@ media
 
 venv/
 
+
 # Distribution / packaging
 .Python
 build/
