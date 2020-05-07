@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'authentication',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,6 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+LOGIN_REDIRECT_URL="/books"

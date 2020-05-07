@@ -19,10 +19,12 @@
         <th scope="col">Genre</th>
         <th scope="col">Borrow Date</th>
         <th scope="col">Return Buttons</th>
+        <th scope="col">Rate BOOk</th>
+        <th scope="col">submit rating</th> 
         </tr>
     </thead>
     <tbody>
-        {% for copy in books %}
+        {% for copy in books %}‹
         <tr>
         <th scope="row">{{ forloop.counter }}</th>
         <td><a href="/book/{{copy.book.id}}/">{{ copy.book.title }}</a></td>
@@ -30,14 +32,75 @@
         <td>{{ copy.book.genre }}</td>
         <td>{{ copy.borrow_date }}</td>
         <td><button class="btn btn-primary" onclick="returnBook({{ copy.id }})">Return {{ copy.book.title }}</button></td>
+        <td><input text="integer" class='form-text btn-primary' id="rat"></td>
+        <td><button class="btn btn-primary" onclick="rateBook({{ copy.id }})" text="number">Rate!!</button></td>
         </tr>
         {% endfor %}
+        
     </tbody>
+    <p>rating should be between 1-5 and in integer OR else accha ni hoga</p>
 </table>
+
+
+
 <script>
 // Fill in this function by yourself. It should make a post call to the returnBookView and display an appropriate message
-function returnBook(bid){
-    ;
-}
+    function returnBook(bid){
+        console.log("works");
+        $.ajax({
+            url: "{% url 'return-book' %}",
+            method: "POST",
+            data: {
+                bid:bid
+            },
+            success: function(data, status, xhr){
+                alert(data['message']);
+                location.reload()
+
+
+            },
+            error: function(xhr, status, err){
+                alert("Some error occured");
+            }
+
+        })
+
+        ;
+    }
+
+    function rateBook(bid){
+        console.log("works");
+        rating=$("#rat").val();
+        
+        rating_int=parseInt(rating,10)
+        console.log(rating,rating_int)
+        
+        if(rating==""||rating<1||rating>10){
+            alert("Rating must be between 1-10 in integer")
+        }
+        
+        else{
+             $.ajax({
+            url: "{% url 'rate-book' %}",
+            method: "POST",
+            data: {
+                bid:bid,
+                stars:rating
+            },
+            success: function(data, status, xhr){
+                alert(data['message']);
+                location.reload()
+
+
+            },
+            error: function(xhr, status, err){
+                alert("Some error occured");
+            }
+
+        })
+            
+        } 
+        
+    }
 </script>
 {% endblock %}
